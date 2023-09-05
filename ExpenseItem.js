@@ -1,14 +1,39 @@
+import './ExpenseItem.css';
 
-function ExpenseItem() {
+function ExpenseItem(props) {
+    
+    // var expenseItems = props.data.map(expense => 
+    // <li key={expense.id}>
+    // title={expense.title}
+    // amount={expense.amount}
+    // date={expense.date}
+    // location={expense.location}
+    // </li>
+    // );
+    
+    //console.log(props.data);
     return (
-        <div>
-            <h2>Expense Items</h2>
-            <div>
-                <p>Food Rs 10</p>
-                <p>Petrol Rs 100</p>
-                <p>Movies Rs 200</p>
+        // <div>{props.data.map(expense => 
+        //     <li>{expense.title} {expense.amount} {expense.location} {expense.date.toISOString()}</li>
+            
+
+        //     )}</div>
+        
+        <div>{props.data.map(expense => 
+            <div className="expense-item">
+        
+            <div>{expense.date.toISOString()}</div>
+            <div className="expense-item__description">
+                <h2>{expense.title}</h2>
+                <h2>{expense.location}</h2>
+                <div className="expense-item__price">${expense.amount}</div>
             </div>
+            
         </div>
+        )}
+        
+        </div>
+        
     )
 
 }
