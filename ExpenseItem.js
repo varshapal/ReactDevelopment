@@ -1,8 +1,9 @@
 import ExpenseDate from './ExpenseDate';
 import ExpenseDetails from './ExpenseDetails';
+import Card from '../UI/Card';
 import './ExpenseItem.css';
 
-function ExpenseItem(props) {
+const ExpenseItem = (props) =>  {
     
     //const month = props.date.toLocalString('en-US', { month: 'long' });
     // const day = props.date.toLocalString('en-US', { day: 'long2-digit' });
@@ -24,8 +25,8 @@ function ExpenseItem(props) {
 
         //     )}</div>
         
-        <div>{props.data.map(expense => 
-            <div className="expense-item">
+        <Card>{props.data.map(expense => 
+            <Card className="expense-item">
         
                 {/* <div>
                     <div>{expense.date.toLocaleString('en-US', {month: 'long'})}</div>
@@ -40,10 +41,10 @@ function ExpenseItem(props) {
                     <ExpenseDetails amount={expense.amount} location={expense.location} title={expense.title}></ExpenseDetails>
             </div>
             
-            </div>
+            </Card>
         )}
         
-        </div>
+        </Card>
         
     )
 
