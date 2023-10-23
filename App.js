@@ -1,53 +1,86 @@
-import ExpenseItem from './components/Expenses/ExpenseItem';
+import React, { useEffect, useState } from 'react'; 
+
+import NewOrder from './components/NewOrder';
 import logo from './logo.svg';
+
+import ItemList from './components/ItemList';
 import './App.css';
+const table1 = [
+  {
+    id: 1,
+    price: 100,
+    dish: 'Noodles',
+    table: 'table1'
+  }
+]
 
-
-const App = () => {
-  const expenses = [
+const table2 = [
     {
-      id: 'e1',
-      title: 'Toilet Paper',
-      amount: 94.12,
-      date: new Date(2020, 7, 14),
-      location: 'ABC Grocery Store'
-    },
-    { id: 'e2', title: 'New TV', amount: 799.49, date: new Date(2021, 2, 12), location: 'XYZ TV Showroom' },
-    {
-      id: 'e3',
-      title: 'Car Insurance',
-      amount: 294.67,
-      date: new Date(2021, 2, 28),
-      location: 'XYZ Insurance Company'
-    },
-    {
-      id: 'e4',
-      title: 'New Desk (Wooden)',
-      amount: 450,
-      date: new Date(2021, 5, 12),
-      location: 'Desk Showroom'
-    },
-  ];
+      id: 1,
+      price: 100,
+      dish: 'Keema',
+      table: 'table2'
+    }
+]
 
-  // const expenseItems = expenses.map(expense => 
-  //   <li key={expense.id}>
-  //     title={expense.title}
-  //     amount={expense.amount}
-  //     date={expense.date}
-  //     location={expense.location}
-  //   </li>
-  //   );
+const table3 = [
+  {
+    id: 1,
+    price: 100,
+    dish: 'Rasgulla',
+    table: 'table3'
+  }
+]
 
+const getLocaleStoredOrder = () =>{
+  let orders = localStorage.getItem('orders');
+  console.log(orders);
+  if(orders) {
+    return JSON.parse(localStorage.getItem('orders'));
+  }
+}
+
+function App() {
+  const[orders1, setOrders1] = useState(table1);
+  const[orders2, setOrders2] = useState(table2);
+  const[orders3, setOrders3] = useState(table3);
+  
+  
+
+  
+
+  
+  const addOrderHandler = (order) => {
+    if(order.table ==='Table1')
+    {
+      setOrders1((prevOrder1) => {
+        return [order, ...prevOrder1];
+      });
+    }
+    else if(order.table==='Table2') 
+    {
+      setOrders2((prevOrder2) => {
+        return [order, ...prevOrder2];
+      });
+    }
+
+    else if(order.table==='Table3') 
+    {
+      setOrders3((prevOrder3) => {
+        return [order, ...prevOrder3];
+      });
+    }
+
+    
+    
+  }
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.  
+          Edit <code>src/App.js</code> and save to reload.
         </p>
-        
-        <ExpenseItem data={expenses}></ExpenseItem>
-        
         <a
           className="App-link"
           href="https://reactjs.org"
@@ -56,6 +89,13 @@ const App = () => {
         >
           Learn React
         </a>
+        <NewOrder onAddOrder={addOrderHandler}/>
+        <p>Table1</p>
+        <ItemList items={orders1}/>
+        <p>Table2</p>
+        <ItemList items={orders2}/>
+        <p>Table3</p>
+        <ItemList items={orders3}/>
       </header>
     </div>
   );
