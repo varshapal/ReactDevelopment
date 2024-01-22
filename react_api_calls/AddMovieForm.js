@@ -17,13 +17,14 @@ const AddMovieForm = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setDataList((prevData) => [...prevData, formData ]);
+    const newMovieObj = {...formData };
+    setDataList((prevData) => [...prevData, newMovieObj ]);
     setFormData({
         title: '',
         opening: '',
         releasing: '',
     })
-    console.log(dataList);
+    console.log('new Movie', newMovieObj);
   };
 
   
