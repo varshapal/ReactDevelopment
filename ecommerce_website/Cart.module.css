@@ -1,0 +1,9 @@
+.cart {
+    width: 40%;
+    height: auto;
+    background-color: aqua;
+}
+.cart img {
+    width: 50px;
+    border: none;
+}
