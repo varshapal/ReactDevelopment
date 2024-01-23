@@ -1,0 +1,13 @@
+.store{
+    height: 10rem;
+    background-color: gray;
+    text-align: center;
+}
+
+.store h1 {
+    font-size: 5rem;
+    color: white;
+}
+.music {
+    text-align: center;
+}
