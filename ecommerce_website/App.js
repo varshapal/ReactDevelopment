@@ -1,4 +1,4 @@
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -7,6 +7,8 @@ import Store from "./components/pages/Store";
 import { CartProvider } from "./store/CartContext";
 import Home from './components/pages/Home';
 import ContactUs from './components/pages/ContactUs';
+import Product from './components/pages/Product';
+import ProductDetail from './components/pages/ProductDetail';
 
 
 
@@ -38,18 +40,30 @@ function App() {
       {/* <Route path='/'>
         <Home />
       </Route> */}
+      <main>
+        <Switch>
       <Route path='/about'>
         <About />
       </Route>
       <Route path='/contact_us'>
       <ContactUs  onAddUser={addUserHandler}/>
       </Route>
-      <Route path='/store'>
+      <Route path='/store' exact>
       <Store />
       </Route>
-      
+      <Route path='/product' exact>
+      <Product />
+      </Route>
+      {/* <Route path='/product/:productId'>
+      <Store />
+      </Route> */}
+      <Route path='/product/:productId'>
+      <ProductDetail />
+      </Route>
+      </Switch>
+      </main>
       {/* <Cart data={products}/> */}
-      <Footer />
+      {/* <Footer /> */}
     </CartProvider>
     // </RouterProvider>
     
