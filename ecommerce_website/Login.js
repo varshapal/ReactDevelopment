@@ -1,11 +1,14 @@
+import { useContext } from "react";
 import { useState, useRef } from "react";
 import { useHistory} from 'react-router-dom';
 import classes from "./Login.module.css";
 import Store from "./Store";
+import AuthContext from "../../store/auth-context";
 
 
 
 const Login = () => {
+    const authCtx = useContext(AuthContext);
     const history = useHistory();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
@@ -33,14 +36,22 @@ const Login = () => {
         }
       }).then((res) => {
         if(res.ok) {
-            return res.json().then((data) => {
-                history.push('/Store');
-            })
+            return res.json();
+            // return res.json().then((data) => {
+            //     alert('success');
+            //     history.push('/Store');
+            // })
         } else {
             return res.json().then((data) => {
                 alert('authentication failed');
             })
         }
+      }).then(data => {
+        authCtx.login(data.idToken);
+        console.log(data);
+        history.push('/store');
+      }).catch(err => {
+        alert(err.message);
       })
     }
   };
