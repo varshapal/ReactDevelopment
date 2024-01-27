@@ -1,12 +1,15 @@
+import { Link } from 'react-router-dom';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import classes from './Store.module.css';
-import { CartContext } from '../../store/CartContext';
+
 import { useContext } from 'react';
 import Header from '../Header';
+import { CartContext } from '../../store/CartContext';
 
 
 
-const Store = (props, {onAddToCart}) => {
+const Store = (props) => {
+  const cartCtx = useContext(CartContext);
 
     const products = [
         {
@@ -35,7 +38,10 @@ const Store = (props, {onAddToCart}) => {
         },
       ];
     
-
+        const cartHandler = (product) => {
+            cartCtx.addToCart();
+            cartCtx.addToCartModal(product);
+        };
 
 
 
@@ -51,13 +57,13 @@ const Store = (props, {onAddToCart}) => {
                     <h1 className='text-center'>Music</h1>
                     <Row>
                         {products.map((item, index) => (
-                            <Col md={6} className='d-flex justify-content-center'>
+                            <Col key={index} md={6} className='d-flex justify-content-center'>
                                 <Card  border='light' style={{width: '18rem'}}>
-                                    <Card.Title>{item.Title}</Card.Title>
-                                    <img src={item.imageUrl}  alt='flower'/>
+                                    <Link to='/store/item1'><Card.Title>{item.title}</Card.Title>
+                                    <img src={item.imageUrl}  alt='flower'/></Link>
                                     <Card.Body>
                                         <Card.Text>Rs. {item.price}</Card.Text>
-                                        <Button>Add To Cart</Button>
+                                        <Button onClick={() => cartHandler(item)}>Add To Cart</Button>
                                     </Card.Body>
                                 </Card>
                             </Col>
@@ -65,10 +71,10 @@ const Store = (props, {onAddToCart}) => {
                         
                     </Row>
 
-                    <div class="container my-md-3">
-          <div class="row">
-            <div class="col text-center">
-              <Button>See the Cart</Button>
+                    <div className="container my-md-3">
+          <div className="row">
+            <div className="col text-center">
+              <Button onClick={cartHandler}>See the Cart</Button>
             </div>
           </div>
         </div>
