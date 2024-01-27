@@ -41,6 +41,8 @@ const Store = (props) => {
         const cartHandler = (product) => {
             cartCtx.addToCart();
             cartCtx.addToCartModal(product);
+            // cartCtx.fetchCartItems();
+            // cartCtx.updateCartOnServer(product);
         };
 
 
