@@ -1,10 +1,12 @@
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useProductContext } from "../store/FormContext";
 import classes from "./ProductForm.module.css";
+import { ProductsContext } from "../store/ProductsContext";
 
 const ProductForm = () => {
-  const { addProduct } = useProductContext();
+  //const { addProduct } = useProductContext();
+  const productCtx = useContext(ProductsContext);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -17,7 +19,9 @@ const ProductForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addProduct(formData);
+    //addProduct(formData);
+    productCtx.updateServer(formData);
+
     
     setFormData({ name: "", description: "", price: "" });
   };

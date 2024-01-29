@@ -1,14 +1,22 @@
 // ProductList.js
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useProductContext } from "../store/FormContext";
 import classes from "./ProductList.module.css";
 import Card from "./Card";
+import { ProductsContext } from "../store/ProductsContext";
 
 const ProductList = () => {
+  const productCtx = useContext(ProductsContext);
   const { products = [], addToCart, addToCartModal } = useProductContext();
-  console.log("Products:", products);
+  //console.log("Products:", products);
   const [quantity, setQuantity] = useState(1);
 
+  useEffect(() => {
+    const product = productCtx.fetchProducts();
+    console.log(product);
+  },[]);
+
+  
   const quantityChangeHandler = (e) => {
     setQuantity(parseInt(e.target.value, 10));
   };
@@ -30,7 +38,7 @@ const ProductList = () => {
       <div className={classes.list}>
         <h2>Product List</h2>
         <ul>
-          {products.map((product, index) => (
+          {productCtx.product.map((product, index) => (
             <li key={index}>
               <strong>Name:</strong> {product.name},{" "}
               <strong>Description:</strong> {product.description},
