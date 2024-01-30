@@ -3,6 +3,7 @@ import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import AuthContext from './store/auth-context';
 import { useContext } from 'react';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -18,6 +19,10 @@ function App() {
       {authCtx.isLoggedIn && <Route path='/' exact>
         <Home />
       </Route>}
+
+      <Route path="/profile_page">
+          <ProfilePage />
+        </Route>
       </Switch>
       
       
