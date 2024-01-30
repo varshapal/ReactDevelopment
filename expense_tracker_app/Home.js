@@ -25,13 +25,18 @@ const Home = () => {
             })
             const data = await response.json();
             console.log(data);
+}
 
-            
-        }
+const logoutHandler = () => {
+    console.log('hi');
+    authCtx.logout();
+    history.push('/signup');
+}
         
     
     return(
         <div>
+         <button onClick={logoutHandler}>Logout</button>   
         <h1>Welcome to Expense Tracker</h1>
         <p>Your profile is incomplete<button onClick={updateProfile}>Complete Now</button></p><hr />
         <button onClick={verifyEmailHandler}>Verify Email Id</button>
