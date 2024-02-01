@@ -61,6 +61,31 @@ const ExpenseForm = () => {
         getExpenses();
     }, [])
 
+    const deteletExpense = async () => {
+        try {
+            const response = await fetch('https://react-http-9242d-default-rtdb.firebaseio.com/expenses.json');
+        const data = await response.json();
+        //console.log(data);
+        for(const key in data) {
+            const deleteRequest = await fetch(`https://react-http-9242d-default-rtdb.firebaseio.com/expenses/${key}.json`, {
+                method: 'DELETE',
+            });
+            if(!deleteRequest.ok) {
+                throw new Error('Failed to delete expense');
+                
+            }
+            
+            console.log('Expenses Successfully deleted');
+            return{message: 'successfully deleted'};
+            
+        }
+        
+        } catch(error) {
+            console.log("error", error);
+            
+        }
+        
+    }
 
     return(
         <section>
@@ -83,8 +108,11 @@ const ExpenseForm = () => {
                 </label>
                 <button type="submit">Add Expense</button>
             </form>
-            <p><h4>Expense List</h4>
-                {expenseList.map((item) => <p>{item.expense}- {item.description}- {item.category}</p>)}</p>
+            <p><strong>Expense List</strong>
+                {expenseList.map((item) => <p>{item.expense}- {item.description}- {item.category} <button onClick={deteletExpense}>Delete</button> <button>Edit</button></p>)}
+                
+                
+                </p>
         </section>
     )
 };
