@@ -67,6 +67,9 @@ const Signup = () => {
              
         }
     
+        const clickHandler = () => {
+          history.push('/forgot_password');
+      }
 
   return (
     <section className={classes.auth}>
@@ -81,6 +84,10 @@ const Signup = () => {
         {!isLogin && <div className={classes.control}>
           <input type="password" placeholder="confirm password" required ref={confirmPasswordInputRef}/>
         </div>}
+        <div className={classes.actions}>
+        {isLogin && <button onClick={clickHandler}>forgot password</button>}
+        </div>
+        
         <div className={classes.actions}>
           <button type="submit">{isLogin ? "Login" : "Sign Up"}</button>
         </div>
