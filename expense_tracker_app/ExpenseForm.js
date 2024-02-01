@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ExpenseForm = () => {
     const [formData, setFormData] = useState({
@@ -16,16 +16,52 @@ const ExpenseForm = () => {
         })
     }
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
         const expenses = {
             expense: formData.expense,
             description: formData.description,
             category: formData.category
         }
-        setExpenseList([...expenseList, expenses]);
+        //setExpenseList([...expenseList, expenses]);
+
+        const response = await fetch('https://react-http-9242d-default-rtdb.firebaseio.com/expenses.json', {
+            method: 'POST',
+            body: JSON.stringify(expenses),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const data = await response.json();
+        //console.log(data);
+        
         
     }
+
+    const getExpenses = async () => {
+        const response = await fetch('https://react-http-9242d-default-rtdb.firebaseio.com/expenses.json');
+        const data = await response.json();
+        console.log("data",data);
+        
+        const loadedExpense = [];
+
+        for( const key in data) {
+            loadedExpense.push({
+                id: key,
+                expense: data[key].expense,
+                description: data[key].description,
+                category: data[key].category
+            })
+        }
+
+        setExpenseList(loadedExpense);
+    }
+
+    useEffect(() => {
+        getExpenses();
+    }, [])
+
+
     return(
         <section>
             <form onSubmit={submitHandler}>
