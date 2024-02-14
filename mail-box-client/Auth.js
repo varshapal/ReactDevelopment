@@ -2,7 +2,12 @@ import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import classes from './Auth.module.css';
 import { useRef, useState } from "react";
 
+import { authActions } from "../store/auth-slice";
+import { useDispatch } from "react-redux";
+
 const Auth = () => {
+    const dispatch = useDispatch();
+    
     const [isSignupScreen, setIsSignupScreen] = useState(true);
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
@@ -18,11 +23,15 @@ const Auth = () => {
 
         const eneteredEmail = emailInputRef.current.value;
         const enteredPassword = passwordInputRef.current.value;
-        const enetredCnfPassword = confirmPasswordInputRef.current.value;
-
-        if(enteredPassword !== enetredCnfPassword) {
-            alert('Password not match');
+        if(isSignupScreen) {
+            const enteredConfirmPassword = confirmPasswordInputRef.current.value;
+            if(enteredPassword !== enteredConfirmPassword) {
+                alert('Password not match');
+            }
         }
+        
+
+        
         
         let url ;
         if(!isSignupScreen) {
@@ -52,7 +61,12 @@ const Auth = () => {
             }
         }).then((data) => {
             console.log(data);
-            console.log('Successfully Register');
+            if(isSignupScreen) {
+                console.log('Successfully Register');
+            }
+            dispatch(authActions.isLogin(data.idToken));
+            
+
         }).catch((error) => {
             alert(error.message);
         })
@@ -61,7 +75,7 @@ const Auth = () => {
         <section className={classes.auth}>
         <Container className="justify-content-center align-items-center text-center">
             <Row>
-                <Col xs={4}>
+                <Col xs={5}>
                     <Card>
                         <Card.Header>
                             <h3>{isSignupScreen ? 'SignUp' : 'Login'}</h3>
@@ -75,13 +89,16 @@ const Auth = () => {
                                     <Form.Control  type="password" placeholder="password" required ref={passwordInputRef}/>
                                 </Form.Group>
                                 <Form.Group className="mb-3">
-                                    <Form.Control type="password" placeholder="confirm password" required ref={confirmPasswordInputRef}/>
+                                    {isSignupScreen && <Form.Control type="password" placeholder="confirm password" required ref={confirmPasswordInputRef}/>}
                                 </Form.Group>
-                                <Form.Group className="mb-3" >
-                                    <Button variant="info" type="submit">{isSignupScreen ? 'Sign up' : 'Login'}</Button>
+                                <Form.Group className="mb-3 d-grid" >
+                                    <Button variant="info"  type="submit">{isSignupScreen ? 'Sign up' : 'Login'}</Button>
+                                </Form.Group>
+                                <Form.Group>
+                                    {!isSignupScreen && <Button variant="link">Forgot password</Button>}
                                 </Form.Group>
                             </Form>
-                            <Button variant="secondary" onClick={toggleScreenHandler}>{isSignupScreen ? 'Have an account? Login' : 'Do Not have an account? signup'}</Button>
+                            <Button variant="secondary" onClick={toggleScreenHandler}>{isSignupScreen ? 'Have an account? Login' : 'Dont have an account? signup'}</Button>
                         </Card.Body>
                     </Card>
                 </Col>
