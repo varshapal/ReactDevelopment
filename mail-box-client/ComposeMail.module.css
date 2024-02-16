@@ -1,0 +1,9 @@
+.compose {
+    width: 90%;
+    margin: 5rem auto;
+    background-color: rgb(242, 246, 246);
+}
+
+.compose Button {
+    margin-top: 10px;
+}
