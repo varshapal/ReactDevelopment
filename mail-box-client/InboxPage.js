@@ -4,18 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { inboxActions } from "../store/inbox-slice";
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
+import useFetch from "../component/useFetch";
 
 import EmailList from "./EmailList";
-import { useHistory } from "react-router-dom";
+
 
 const InboxPage = () => {
   const mailId = useSelector((state) => state.auth.email);
-
-  const history = useHistory();
+  const totalUnreadMails = useSelector((state) => state.inbox.totalUnreadMails);
+  
   const dispatch = useDispatch();
-  const isComposemail = useSelector((state) => state.inbox.isComposemail);
+  
   const emails = useSelector((state) => state.inbox.emails);
-  const unreadmessage = emails.length;
+  const [data] = useFetch("https://react-project-3793d-default-rtdb.firebaseio.com/email.json");
+  console.log("data",data);
 
   const [emailList, setEmailList] = useState([]);
 
@@ -25,11 +27,53 @@ const InboxPage = () => {
 
   //getData
 
-  const getData = async () => {
-    try {
-      const response = await fetch("https://react-http-9242d-default-rtdb.firebaseio.com/email.json");
-      const data = await response.json();
+  // const getData = async () => {
+  //   try {
+  //     const response = await fetch("https://react-project-3793d-default-rtdb.firebaseio.com/email.json");
+  //     const data = await response.json();
 
+  //     const loadData = [];
+
+  //     for (const key in data) {
+  //       if (data[key].to === mailId) {
+  //         loadData.push({
+  //           id: key,
+  //           to: data[key].to,
+  //           sub: data[key].sub,
+  //           msg: data[key].msg,
+  //           time: data[key].time,
+  //           read: data[key].read,
+  //         });
+  //       }
+  //     }
+  //     console.log("load", loadData);
+
+  //     setEmailList(loadData);
+  //     dispatch(inboxActions.saveMailData(loadData));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+
+  // useEffect(() => {
+  //   getData();
+  // }, []);
+  
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     getData();
+  //   }, 1000);
+    
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   }
+  // },[]);
+
+  //get data from database
+
+  useEffect(()=> {
+    if(data) {
       const loadData = [];
 
       for (const key in data) {
@@ -40,42 +84,24 @@ const InboxPage = () => {
             sub: data[key].sub,
             msg: data[key].msg,
             time: data[key].time,
+            read: data[key].read,
           });
         }
       }
-      //console.log("load", loadData);
+      console.log("load", loadData);
 
       setEmailList(loadData);
       dispatch(inboxActions.saveMailData(loadData));
-    } catch (error) {
-      console.log(error);
     }
-  };
-
-  useEffect(() => {
-    setInterval(() => {
-      getData();
-    }, 5000);
-    
-  }, []);
-
+  }, [data]);
   
-
-  const openInbox = () => {
-    history.push("/inbox");
-    console.log('hello');
-  };
-
-  const openSentBox = () => {
-    history.push("/sentbox");
-  };
 
   return (
     <div className={classes.inbox}>
       <Container>
         <Row className={classes.header}>
           <Col xs={2}>
-            <img src="Gmail-Logo.png" />
+            <img src="Gmail-Logo.png" alt="logo"/>
           </Col>
           <Col xs={6} className={classes.search}>
             <Form.Control
@@ -94,16 +120,14 @@ const InboxPage = () => {
             
             <div className={classes.leftoptions}>
               <div className={classes.active}>
+                <div className={classes.message}>
                 <div><Link to="/inbox">Inbox</Link></div>
-                <div><spam>{unreadmessage}</spam></div>
+                <div><span>{totalUnreadMails}</span></div>
+                </div>
               </div>
-              <div><Link>Unread</Link></div>
-              <div><Link>Draft</Link></div>
-              <div><Link to="/sentbox">Sent</Link></div>
-              <div><Link>Archive</Link></div>
-              <div><Link>Spam</Link></div>
-              <div><Link>Deleted Item</Link></div>
-            </div>
+                
+                <div><Link to="/sentbox">Sent</Link></div>
+              </div>
           </Col>
           <Col xs={10} className={classes.rightside}>
             {emailList.map((email) => (
@@ -114,6 +138,7 @@ const InboxPage = () => {
                 sub={email.sub}
                 msg={email.msg}
                 time={email.time}
+                read={email.read}
               />
             ))}
           </Col>
