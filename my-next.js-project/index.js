@@ -1,25 +1,27 @@
 //our-getDomainLocale.com/aboutus
-
+import DeveloperPage from "./[developerId]";
 import { Fragment } from "react";
 import Link from "next/link";
 
-
+const details = [
+    { id : 1, name: 'Yash', role: 'Senior Developer'},
+    { id : 2, name: 'Vaibhav', role: 'Backend Developer'},
+    { id : 3, name: 'Suresh', role: 'Frontend Developer'}
+]
 
 const AboutPage = () => {
     return(
         <Fragment>
             <h1>The About Page</h1>
             <ul>
-                <li>
-                    <Link href='/aboutus/1'> id:1</Link>
-                </li>
-                <li>
-                    <Link href='/aboutus/2'> id:2</Link>
-                </li>
-                <li>
-                    <Link href='/aboutus/3'> id:3</Link>
-                </li>
+                {details.map((detail) => (
+                    <li key={detail.id}>
+                        <Link href={`/aboutus/${detail.id}`}>{detail.name}</Link>
+                    </li>
+                    
+                ))}
             </ul>
+            
         </Fragment>
         
 
