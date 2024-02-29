@@ -1,31 +1,59 @@
-//our-getDomainLocale.com/aboutus
-import DeveloperPage from "./[developerId]";
-import { Fragment } from "react";
-import Link from "next/link";
+import { Fragment} from 'react';
 
-const details = [
-    { id : 1, name: 'Yash', role: 'Senior Developer'},
-    { id : 2, name: 'Vaibhav', role: 'Backend Developer'},
-    { id : 3, name: 'Suresh', role: 'Frontend Developer'}
-]
+import MeetupDetail from '../../components/meetups/MeetupDetail';
 
-const AboutPage = () => {
+function MeetupDetails () {
     return(
-        <Fragment>
-            <h1>The About Page</h1>
-            <ul>
-                {details.map((detail) => (
-                    <li key={detail.id}>
-                        <Link href={`/aboutus/${detail.id}`}>{detail.name}</Link>
-                    </li>
-                    
-                ))}
-            </ul>
-            
-        </Fragment>
-        
-
+        <MeetupDetail 
+            image='https://plus.unsplash.com/premium_photo-1663050685796-3624fdc2b4df?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' 
+            title='A First Meetup' 
+            address="some street 5, some city" 
+            description="This is a first meetup" 
+        />
     )
 };
 
-export default AboutPage;
+export async function getStaticPaths() {
+    return {
+        fallback: false,
+        paths: [
+            {
+                params: {
+                    meetupId: 'm1',
+                }
+            },
+            {
+                params: {
+                    meetupId: 'm2',
+                }
+            },
+            {
+                params: {
+                    meetupId: 'm3',
+                }
+            }
+
+        ]
+    }
+}
+
+export async function getStaticProps(context) {
+    // fetch data for a single meetup
+
+    const meetupId = context.params.meetupId;
+
+    console.log(meetupId);
+    return {
+        props: {
+            meetupData: {
+                image: 'https://plus.unsplash.com/premium_photo-1663050685796-3624fdc2b4df?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                id: meetupId,
+                title: 'A First Meetup',
+                address: 'some street 5, some city',
+                description: 'This is a first meetup'
+            }
+        }
+    }
+}
+
+export default MeetupDetails;
